@@ -24,8 +24,10 @@
 <script>
 (() => {
   'use strict';
+  const STORAGE_KEY = 'businessbuddy-data';
   const $ = (selector) => document.querySelector(selector);
   const today = new Date();
+
   const localDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const plusDays = (d, n) => {
     const x = new Date(d);
@@ -53,21 +55,57 @@
     ]
   });
 
-  let data;
-  try {
-    data = JSON.parse(localStorage.getItem('businessbuddy-data')) || seed();
-  } catch {
-    data = seed();
-  }
+  const normalizeData = (value) => {
+    const fallback = seed();
+    const source = value && typeof value === 'object' ? value : {};
+    const normalizedServices = Array.isArray(source.services) && source.services.length
+      ? source.services
+          .map((service) => ({
+            name: String(service?.name || '').trim(),
+            price: Number(service?.price) || 0
+          }))
+          .filter((service) => service.name)
+      : fallback.services;
 
-  if (!Array.isArray(data.services)) data.services = seed().services;
+    const normalizedAppointments = Array.isArray(source.appointments)
+      ? source.appointments
+          .map((appointment) => ({
+            id: Number(appointment?.id) || Date.now() + Math.random(),
+            name: String(appointment?.name || '').trim(),
+            phone: String(appointment?.phone || '').trim(),
+            service: String(appointment?.service || normalizedServices[0]?.name || 'Altro').trim(),
+            date: String(appointment?.date || localDate(today)).trim(),
+            time: String(appointment?.time || '10:00').trim(),
+            price: Number(appointment?.price) || 0,
+            status: ['Confermato', 'In attesa', 'Annullato'].includes(appointment?.status) ? appointment.status : 'Confermato',
+            notes: String(appointment?.notes || '').trim()
+          }))
+          .filter((appointment) => appointment.name && appointment.date && appointment.time)
+      : fallback.appointments;
 
+    return {
+      name: String(source.name || fallback.name).trim() || fallback.name,
+      services: normalizedServices,
+      appointments: normalizedAppointments
+    };
+  };
+
+  const loadData = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return normalizeData(raw ? JSON.parse(raw) : null);
+    } catch {
+      return seed();
+    }
+  };
+
+  let data = loadData();
   let month = new Date(today.getFullYear(), today.getMonth(), 1);
   let editingId = null;
 
   const save = () => {
     try {
-      localStorage.setItem('businessbuddy-data', JSON.stringify(data));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch {}
     render();
   };
@@ -79,7 +117,6 @@
     const [y, m, d] = s.split('-').map(Number);
     return new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(y, m - 1, d));
   };
-
   const notify = (message) => {
     const node = $('#notice');
     node.textContent = message;
@@ -112,6 +149,18 @@
 
     return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
   };
+
+  function populateServiceSelect(selectedValue = '') {
+    const select = $('#fService');
+    if (!select) return;
+
+    const current = selectedValue || select.value || data.services[0]?.name || 'Altro';
+    const options = data.services.length ? data.services.map((service) => `<option value="${escapeHtml(service.name)}">${escapeHtml(service.name)}</option>`).join('') : '<option value="Altro">Altro</option>';
+    select.innerHTML = options;
+    const hasCurrent = [...select.options].some((option) => option.value === current);
+    select.value = hasCurrent ? current : (data.services[0]?.name || 'Altro');
+    select.disabled = data.services.length === 0;
+  }
 
   function go(page) {
     document.querySelectorAll('.page').forEach((panel) => panel.classList.add('hidden'));
@@ -150,11 +199,12 @@
     $('#statToday').textContent = String(todays.length);
     $('#statClients').textContent = String(clients().length);
     $('#statPending').textContent = String(data.appointments.filter((a) => a.status === 'In attesa').length);
-    $('#statRevenue').textContent = money(todays.filter((a) => a.status === 'Confermato').reduce((sum, a) => sum + (Number(a.price) || 0), 0));
+    $('#statRevenue').textContent = money(todays.filter((a) => a.status === 'Confermato').reduce((sum, item) => sum + (Number(item.price) || 0), 0));
     $('#todayList').innerHTML = todays.length
       ? todays.map((a) => appointmentCard(a, true)).join('')
       : '<div class="empty">Nessun appuntamento per oggi.<br>Aggiungine uno per iniziare.</div>';
 
+    populateServiceSelect();
     renderAppointments();
     renderClients();
     renderCalendar();
@@ -178,14 +228,7 @@
         `).join('')
       : '<div class="empty">Nessun servizio nel listino.</div>';
 
-    const select = $('#fService');
-    if (select) {
-      const current = select.value;
-      select.innerHTML = data.services.map((service) => `<option>${escapeHtml(service.name)}</option>`).join('') + '<option>Altro</option>';
-      if ([...select.options].some((option) => option.value === current)) {
-        select.value = current;
-      }
-    }
+    populateServiceSelect();
   }
 
   function renderReports() {
@@ -200,7 +243,7 @@
     const prefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     const monthAppointments = data.appointments.filter((a) => a.date && a.date.startsWith(prefix) && a.status !== 'Annullato');
 
-    revenueNode.textContent = money(monthAppointments.filter((a) => a.status === 'Confermato').reduce((sum, a) => sum + (Number(a.price) || 0), 0));
+    revenueNode.textContent = money(monthAppointments.filter((a) => a.status === 'Confermato').reduce((sum, item) => sum + (Number(item.price) || 0), 0));
     appointmentsNode.textContent = String(monthAppointments.length);
     clientsNode.textContent = String(clients().length);
     pendingNode.textContent = String(data.appointments.filter((a) => a.status === 'In attesa').length);
@@ -298,12 +341,12 @@
     $('#modalTitle').textContent = appointment ? 'Modifica appuntamento' : 'Nuovo appuntamento';
     $('#fName').value = appointment ? appointment.name : '';
     $('#fPhone').value = appointment ? appointment.phone : '';
-    $('#fService').value = appointment ? appointment.service : 'Taglio uomo';
     $('#fDate').value = appointment ? appointment.date : date;
     $('#fTime').value = appointment ? appointment.time : '10:00';
     $('#fPrice').value = appointment ? appointment.price : 20;
     $('#fStatus').value = appointment && appointment.status === 'In attesa' ? 'In attesa' : 'Confermato';
     $('#fNotes').value = appointment ? appointment.notes : '';
+    populateServiceSelect(appointment ? appointment.service : data.services[0]?.name || 'Altro');
     $('#modalWrap').classList.remove('hidden');
     setTimeout(() => $('#fName').focus(), 50);
   }
@@ -358,6 +401,7 @@
     if (editButton) {
       const index = Number(editButton.dataset.serviceEdit);
       const oldService = data.services[index];
+      if (!oldService) return;
       const name = prompt('Nome del servizio:', oldService.name);
       if (!name || !name.trim()) return;
       const raw = prompt('Prezzo in euro:', String(oldService.price));
@@ -376,6 +420,9 @@
       const index = Number(deleteButton.dataset.serviceDelete);
       if (confirm('Eliminare questo servizio dal listino? Gli appuntamenti già registrati non cambiano.')) {
         data.services.splice(index, 1);
+        if (!data.services.length) {
+          data.services = [{ name: 'Altro', price: 0 }];
+        }
         save();
         notify('Servizio eliminato.');
       }
@@ -393,11 +440,12 @@
 
   $('#appointmentForm').addEventListener('submit', (event) => {
     event.preventDefault();
+    const service = $('#fService').value || (data.services[0]?.name || 'Altro');
     const appointment = {
       id: editingId ?? Date.now(),
       name: $('#fName').value.trim(),
       phone: $('#fPhone').value.trim(),
-      service: $('#fService').value,
+      service,
       date: $('#fDate').value,
       time: $('#fTime').value,
       price: Math.max(0, Number($('#fPrice').value) || 0),
@@ -406,6 +454,11 @@
     };
 
     if (!appointment.name || !appointment.date || !appointment.time) return;
+
+    const matchingService = data.services.find((item) => item.name === service);
+    if (matchingService && Number(appointment.price) <= 0) {
+      appointment.price = Number(matchingService.price) || 0;
+    }
 
     if (editingId !== null) {
       data.appointments = data.appointments.map((item) => item.id === editingId ? appointment : item);
