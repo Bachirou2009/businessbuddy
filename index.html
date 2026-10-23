@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#173d32">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>BusinessBuddy — Gestione appuntamenti</title>
+<style>
+:root{--green:#173d32;--mint:#d8f1c8;--bg:#f5f7f5;--ink:#17221d;--muted:#6c7972;--line:#e2e8e3;--white:#fff;--red:#a83c38;--shadow:0 12px 35px #173d3210}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.app{max-width:1180px;margin:auto;padding:20px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{height:46px;width:46px;border-radius:15px;background:var(--green);color:var(--mint);display:grid;place-items:center;font-size:24px}.brand h1{font-size:20px;margin:0}.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}.store{border:1px solid var(--line);border-radius:12px;background:white;padding:10px 13px;max-width:220px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px}.sidebar,.panel,.stat{background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.sidebar{padding:12px;height:max-content;position:sticky;top:12px}.nav{width:100%;border:0;background:transparent;text-align:left;padding:12px;border-radius:11px;color:#526159;display:flex;align-items:center;gap:11px;margin:2px 0}.nav.active{background:var(--mint);color:var(--green);font-weight:700}.nav span:first-child{width:22px;text-align:center}.side-note{font-size:12px;line-height:1.5;color:var(--muted);border-top:1px solid var(--line);margin-top:12px;padding:14px 8px 5px}.main{min-width:0}.welcome{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:4px 0 20px}.welcome h2{margin:0;font-size:28px;letter-spacing:-.7px}.welcome p{margin:7px 0 0;color:var(--muted);font-size:14px}.btn{border:0;border-radius:11px;padding:11px 15px;background:var(--green);color:white;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn.secondary{background:white;color:var(--green);border:1px solid var(--line)}.btn.danger{background:#fff0ef;color:var(--red)}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.stat{padding:17px}.stat .label{font-size:12px;color:var(--muted)}.stat .value{font-size:27px;font-weight:750;margin:8px 0 3px}.stat .hint{font-size:11px;color:var(--muted)}.columns{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(250px,.7fr);gap:16px}.panel{padding:19px;margin-bottom:16px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.panel h3{font-size:16px;margin:0}.panel-sub{color:var(--muted);font-size:12px;margin-top:5px}.appointment{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}.time{font-weight:750;color:var(--green);background:#eff6ec;padding:10px 7px;text-align:center;border-radius:10px;font-size:13px}.person{font-weight:700;font-size:14px}.detail{font-size:12px;color:var(--muted);margin-top:4px}.pill{font-size:11px;padding:6px 8px;border-radius:99px;background:#e8f6e8;color:#28603e;white-space:nowrap}.pill.wait{background:#fff3d7;color:#8b5b10}.pill.cancel{background:#ffedeb;color:var(--red)}.quick{display:flex;flex-direction:column;gap:10px}.quick button{width:100%;justify-content:flex-start}.empty{text-align:center;padding:30px 12px;color:var(--muted);font-size:14px}.search{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;background:white;margin-bottom:12px}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}th{text-align:left;color:var(--muted);font-size:11px;font-weight:650;padding:10px;border-bottom:1px solid var(--line)}td{padding:13px 10px;border-bottom:1px solid var(--line)}.actions{display:flex;gap:6px}.iconbtn{border:1px solid var(--line);background:white;border-radius:8px;padding:7px 9px;color:var(--green)}.calendar-head{display:flex;align-items:center;gap:10px}.calendar-head h3{flex:1}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.dayhead{text-align:center;color:var(--muted);font-size:11px;padding:7px 0}.day{background:#fbfcfb;border:1px solid var(--line);border-radius:10px;min-height:78px;padding:7px;font-size:12px}.day.today{border-color:var(--green);background:#f0f7ed}.daynum{font-weight:750}.eventdot{font-size:10px;margin-top:7px;background:var(--mint);border-radius:5px;padding:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:700;color:#46564c}.field input,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:white}.form-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:18px}.notice{background:#f0f7ed;color:var(--green);padding:11px 13px;border-radius:10px;font-size:13px;margin-bottom:14px}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.settings-row:last-child{border:0}.muted{color:var(--muted);font-size:12px}.foot{text-align:center;color:var(--muted);font-size:11px;margin:18px 0 8px}.modal-back{position:fixed;inset:0;background:#101a16a6;display:grid;place-items:center;padding:16px;z-index:10}.modal{background:white;border-radius:18px;padding:22px;width:min(540px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 70px #0003}.modalhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.modalhead h3{margin:0}.hidden{display:none!important}.mobile-nav{display:none}
+@media(max-width:800px){.app{padding:13px}.layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;padding:6px;gap:4px}.nav{white-space:nowrap;width:auto;margin:0;padding:10px}.nav span:last-child{display:none}.side-note{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{padding:14px}.columns{grid-template-columns:1fr}.welcome h2{font-size:24px}.welcome{align-items:start;flex-direction:column}.top{align-items:flex-start}.store{max-width:150px}.panel{padding:15px}.appointment{grid-template-columns:55px minmax(0,1fr);}.appointment .pill{grid-column:2;justify-self:start}.formgrid{grid-template-columns:1fr}.day{min-height:58px;padding:5px}.eventdot{font-size:9px}.calendar-grid{gap:4px}}
+</style></head>
+<body><div class="app">
+<header class="top"><div class="brand"><div class="logo">✳</div><div><h1>BusinessBuddy</h1><p>Il tuo negozio, più semplice.</p></div></div><input class="store" id="storeName" aria-label="Nome negozio" value="Studio Verde" title="Modifica il nome del negozio"></header>
+<div class="layout"><aside class="sidebar" aria-label="Navigazione"><button class="nav active" data-page="home"><span>▦</span><span>Panoramica</span></button><button class="nav" data-page="appointments"><span>▣</span><span>Appuntamenti</span></button><button class="nav" data-page="calendar"><span>▦</span><span>Calendario</span></button><button class="nav" data-page="clients"><span>♙</span><span>Clienti</span></button><button class="nav" data-page="services"><span>€</span><span>Servizi e prezzi</span></button><button class="nav" data-page="reports"><span>↗</span><span>Statistiche</span></button><button class="nav" data-page="settings"><span>⚙</span><span>Impostazioni</span></button><div class="side-note">Versione demo · I dati vengono salvati su questo dispositivo.</div></aside>
+<main class="main"><div id="notice" class="notice hidden" role="status"></div><section id="page-home" class="page"><div class="welcome"><div><h2>Buongiorno 👋</h2><p>Ecco cosa succede nel tuo negozio.</p></div><button class="btn" id="addTop">＋ Nuovo appuntamento</button></div><div class="stats"><div class="stat"><div class="label">APPUNTAMENTI OGGI</div><div class="value" id="statToday">0</div><div class="hint">Prenotazioni in agenda</div></div><div class="stat"><div class="label">CLIENTI</div><div class="value" id="statClients">0</div><div class="hint">Nella tua rubrica</div></div><div class="stat"><div class="label">DA CONFERMARE</div><div class="value" id="statPending">0</div><div class="hint">Richiedono attenzione</div></div><div class="stat"><div class="label">INCASSI PREVISTI OGGI</div><div class="value" id="statRevenue">€0</div><div class="hint">Basati sui prezzi inseriti</div></div></div><div class="columns"><div class="panel"><div class="panel-head"><div><h3>Agenda di oggi</h3><div class="panel-sub" id="todayLabel"></div></div><button class="btn secondary" data-goto="appointments">Vedi tutti</button></div><div id="todayList"></div></div><div class="panel"><div class="panel-head"><div><h3>Azioni rapide</h3><div class="panel-sub">Gestisci il negozio in pochi tocchi</div></div></div><div class="quick"><button class="btn" id="quickAdd">＋ Aggiungi appuntamento</button><button class="btn secondary" data-goto="clients">♙ Visualizza clienti</button><button class="btn secondary" data-goto="calendar">▦ Apri calendario</button></div><div style="margin-top:20px;padding:14px;background:#f1f7ee;border-radius:12px"><b style="font-size:13px">Un piccolo consiglio</b><p style="font-size:12px;line-height:1.6;color:#56665b;margin-bottom:0">Conferma gli appuntamenti in attesa per tenere aggiornata l'agenda.</p></div></div></div></section>
+<section id="page-appointments" class="page hidden"><div class="welcome"><div><h2>Appuntamenti</h2><p>Gestisci prenotazioni e disponibilità.</p></div><button class="btn" id="addAppointment">＋ Nuovo appuntamento</button></div><div class="panel"><input class="search" id="appointmentSearch" placeholder="Cerca per nome, servizio o data…"><div id="appointmentList"></div></div></section>
+<section id="page-calendar" class="page hidden"><div class="welcome"><div><h2>Calendario</h2><p>Visualizza gli appuntamenti per giorno.</p></div><button class="btn" id="addCalendar">＋ Prenota</button></div><div class="panel"><div class="panel-head calendar-head"><button class="btn secondary" id="prevMonth">‹</button><h3 id="monthTitle"></h3><button class="btn secondary" id="nextMonth">›</button><button class="btn secondary" id="thisMonth">Oggi</button></div><div class="calendar-grid" id="calendarGrid"></div></div></section>
+<section id="page-clients" class="page hidden"><div class="welcome"><div><h2>Clienti</h2><p>La rubrica dei clienti che hanno prenotato.</p></div><button class="btn" id="exportClients">↓ Esporta CSV</button></div><div class="panel"><input class="search" id="clientSearch" placeholder="Cerca un cliente…"><div class="table-wrap"><table><thead><tr><th>CLIENTE</th><th>CONTATTO</th><th>ULTIMO SERVIZIO</th><th>VISITE</th></tr></thead><tbody id="clientTable"></tbody></table></div></div></section>
+<section id="page-services" class="page hidden"><div class="welcome"><div><h2>Servizi e prezzi</h2><p>Configura il listino della tua attività.</p></div><button class="btn" id="addService">＋ Nuovo servizio</button></div><div class="panel"><div id="serviceList"></div><div class="muted" style="line-height:1.6;margin-top:12px">I servizi sono salvati solo su questo dispositivo in questa versione demo.</div></div></section>
+<section id="page-reports" class="page hidden"><div class="welcome"><div><h2>Statistiche</h2><p>Un riepilogo degli appuntamenti registrati.</p></div><button class="btn secondary" id="exportReport">↓ Esporta report CSV</button></div><div class="stats"><div class="stat"><div class="label">INCASSI CONFERMATI QUESTO MESE</div><div class="value" id="reportRevenue">€0</div><div class="hint">Stima basata sugli appuntamenti confermati</div></div><div class="stat"><div class="label">APPUNTAMENTI QUESTO MESE</div><div class="value" id="reportAppointments">0</div><div class="hint">Esclusi quelli annullati</div></div><div class="stat"><div class="label">CLIENTI UNICI</div><div class="value" id="reportClients">0</div><div class="hint">Calcolati dalla rubrica appuntamenti</div></div><div class="stat"><div class="label">IN ATTESA</div><div class="value" id="reportPending">0</div><div class="hint">Da confermare</div></div></div><div class="panel"><h3>Servizi più prenotati</h3><div id="topServices" style="margin-top:14px"></div></div><div class="muted">Queste cifre non sono contabilità ufficiale e non tengono conto di rimborsi, tasse o pagamenti non registrati.</div></section>
+<section id="page-settings" class="page hidden"><div class="welcome"><div><h2>Impostazioni</h2><p>Personalizza BusinessBuddy.</p></div></div><div class="panel"><h3>Il tuo negozio</h3><div class="settings-row"><div><b>Nome attività</b><div class="muted">Compare nella parte superiore dell'app.</div></div><input id="settingName" class="store" value="Studio Verde"></div><div class="settings-row"><div><b>Valuta</b><div class="muted">Prezzi e incassi previsti.</div></div><b>EUR · €</b></div><div class="settings-row"><div><b>Salvataggio dati</b><div class="muted">I dati di questa demo restano nel browser di questo dispositivo.</div></div><span class="pill">Locale</span></div><div class="settings-row"><div><b>Esporta dati</b><div class="muted">Scarica una copia degli appuntamenti.</div></div><button class="btn secondary" id="exportData">Esporta JSON</button></div><div class="settings-row"><div><b>Ripristina dati di esempio</b><div class="muted">Cancella le modifiche e ricarica i dati iniziali.</div></div><button class="btn danger" id="resetData">Ripristina</button></div></div><div class="panel"><h3>Stato del prodotto</h3><p class="muted" style="line-height:1.7">Questa è una demo locale. Prima di venderla come servizio servono: account sicuri, database online e sincronizzazione, prenotazione pubblica, notifiche email/WhatsApp, pagamenti ricorrenti, privacy policy e test di sicurezza. Non inserire ancora dati reali o sensibili dei clienti.</p></div></section>
+<div class="foot">BusinessBuddy · Prototipo dimostrativo. Non collegato a calendari o pagamenti reali.</div></main></div></div>
+<div id="modalWrap" class="modal-back hidden"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modalhead"><h3 id="modalTitle">Nuovo appuntamento</h3><button class="iconbtn" id="closeModal" aria-label="Chiudi">✕</button></div><form id="appointmentForm"><div class="formgrid"><div class="field"><label for="fName">Nome cliente *</label><input id="fName" required maxlength="80" placeholder="Es. Giulia Rossi"></div><div class="field"><label for="fPhone">Telefono (facoltativo)</label><input id="fPhone" type="tel" maxlength="30" placeholder="Numero di telefono"></div><div class="field"><label for="fService">Servizio *</label><select id="fService"><option>Taglio uomo</option><option>Taglio + barba</option><option>Piega</option><option>Colore</option><option>Trattamento estetico</option><option>Consulenza</option><option>Altro</option></select></div><div class="field"><label for="fDate">Data *</label><input id="fDate" type="date" required></div><div class="field"><label for="fTime">Orario *</label><input id="fTime" type="time" required value="10:00"></div><div class="field"><label for="fPrice">Prezzo (€)</label><input id="fPrice" type="number" min="0" max="10000" step="0.50" value="20"></div><div class="field"><label for="fStatus">Stato</label><select id="fStatus"><option>Confermato</option><option>In attesa</option></select></div><div class="field"><label for="fNotes">Note (facoltative)</label><input id="fNotes" maxlength="250" placeholder="Note per il negozio"></div></div><div class="form-actions"><button type="button" class="btn secondary" id="cancelModal">Annulla</button><button type="submit" class="btn">Salva appuntamento</button></div></form></div></div>
+<script>
+(() => {
+  'use strict';
+  const $ = (selector) => document.querySelector(selector);
+  const today = new Date();
+  const localDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const plusDays = (d, n) => {
+    const x = new Date(d);
+    x.setDate(x.getDate() + n);
+    return localDate(x);
+  };
+
+  const seed = () => ({
+    name: 'Studio Verde',
+    services: [
+      { name: 'Taglio uomo', price: 20 },
+      { name: 'Taglio + barba', price: 30 },
+      { name: 'Piega', price: 25 },
+      { name: 'Colore', price: 55 },
+      { name: 'Trattamento estetico', price: 40 },
+      { name: 'Consulenza', price: 0 },
+      { name: 'Altro', price: 20 }
+    ],
+    appointments: [
+      { id: 1, name: 'Marco Rossi', phone: '', service: 'Taglio uomo', date: localDate(today), time: '09:30', price: 20, status: 'Confermato', notes: '' },
+      { id: 2, name: 'Sara Bianchi', phone: '', service: 'Piega', date: localDate(today), time: '11:00', price: 25, status: 'Confermato', notes: '' },
+      { id: 3, name: 'Luca Verdi', phone: '', service: 'Taglio + barba', date: localDate(today), time: '14:30', price: 30, status: 'In attesa', notes: '' },
+      { id: 4, name: 'Giulia Neri', phone: '', service: 'Colore', date: plusDays(today, 1), time: '10:00', price: 55, status: 'Confermato', notes: '' },
+      { id: 5, name: 'Paolo Conti', phone: '', service: 'Taglio uomo', date: plusDays(today, 2), time: '16:00', price: 20, status: 'Confermato', notes: '' }
+    ]
+  });
+
+  let data;
+  try {
+    data = JSON.parse(localStorage.getItem('businessbuddy-data')) || seed();
+  } catch {
+    data = seed();
+  }
+
+  if (!Array.isArray(data.services)) data.services = seed().services;
+
+  let month = new Date(today.getFullYear(), today.getMonth(), 1);
+  let editingId = null;
+
+  const save = () => {
+    try {
+      localStorage.setItem('businessbuddy-data', JSON.stringify(data));
+    } catch {}
+    render();
+  };
+
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const money = (n) => new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(Number(n) || 0);
+  const fmtDate = (s) => {
+    if (!s) return '';
+    const [y, m, d] = s.split('-').map(Number);
+    return new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(y, m - 1, d));
+  };
+
+  const notify = (message) => {
+    const node = $('#notice');
+    node.textContent = message;
+    node.classList.remove('hidden');
+    setTimeout(() => node.classList.add('hidden'), 4000);
+  };
+
+  const clients = () => {
+    const map = new Map();
+    data.appointments.forEach((appointment) => {
+      const key = appointment.name.trim().toLowerCase();
+      if (!key) return;
+
+      const current = map.get(key) || {
+        name: appointment.name,
+        phone: appointment.phone || '',
+        lastDate: appointment.date,
+        lastService: appointment.service,
+        visits: 0
+      };
+
+      current.visits += 1;
+      if (appointment.date >= current.lastDate) {
+        current.lastDate = appointment.date;
+        current.lastService = appointment.service;
+      }
+      if (appointment.phone) current.phone = appointment.phone;
+      map.set(key, current);
+    });
+
+    return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
+  };
+
+  function go(page) {
+    document.querySelectorAll('.page').forEach((panel) => panel.classList.add('hidden'));
+    const target = $('#page-' + page);
+    if (target) target.classList.remove('hidden');
+
+    document.querySelectorAll('.nav').forEach((nav) => nav.classList.toggle('active', nav.dataset.page === page));
+    if (page === 'calendar') renderCalendar();
+    if (page === 'appointments') renderAppointments();
+    if (page === 'clients') renderClients();
+    if (page === 'services') renderServices();
+    if (page === 'reports') renderReports();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function appointmentCard(appointment, compact = false) {
+    return `
+      <div class="appointment">
+        <div class="time">${escapeHtml(appointment.time)}</div>
+        <div>
+          <div class="person">${escapeHtml(appointment.name)}</div>
+          <div class="detail">${escapeHtml(appointment.service)} · ${money(appointment.price)}${compact ? '' : ' · ' + fmtDate(appointment.date)}</div>
+          ${appointment.notes && !compact ? `<div class="detail">${escapeHtml(appointment.notes)}</div>` : ''}
+        </div>
+        <span class="pill ${appointment.status === 'In attesa' ? 'wait' : appointment.status === 'Annullato' ? 'cancel' : ''}">${escapeHtml(appointment.status)}</span>
+      </div> `;
+  }
+
+  function render() {
+    data.name = data.name || 'Il mio negozio';
+    $('#storeName').value = data.name;
+    $('#settingName').value = data.name;
+    $('#todayLabel').textContent = new Intl.DateTimeFormat('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).format(today);
+
+    const todays = data.appointments.filter((a) => a.date === localDate(today) && a.status !== 'Annullato').sort((a, b) => a.time.localeCompare(b.time));
+    $('#statToday').textContent = String(todays.length);
+    $('#statClients').textContent = String(clients().length);
+    $('#statPending').textContent = String(data.appointments.filter((a) => a.status === 'In attesa').length);
+    $('#statRevenue').textContent = money(todays.filter((a) => a.status === 'Confermato').reduce((sum, a) => sum + (Number(a.price) || 0), 0));
+    $('#todayList').innerHTML = todays.length
+      ? todays.map((a) => appointmentCard(a, true)).join('')
+      : '<div class="empty">Nessun appuntamento per oggi.<br>Aggiungine uno per iniziare.</div>';
+
+    renderAppointments();
+    renderClients();
+    renderCalendar();
+    renderServices();
+    renderReports();
+  }
+
+  function renderServices() {
+    const box = $('#serviceList');
+    if (!box) return;
+
+    box.innerHTML = data.services.length
+      ? data.services.map((service, index) => `
+          <div class="settings-row">
+            <div><b>${escapeHtml(service.name)}</b><div class="muted">Prezzo: ${money(service.price)}</div></div>
+            <div class="actions">
+              <button class="iconbtn" data-service-edit="${index}">Modifica</button>
+              <button class="iconbtn" data-service-delete="${index}">Elimina</button>
+            </div>
+          </div>
+        `).join('')
+      : '<div class="empty">Nessun servizio nel listino.</div>';
+
+    const select = $('#fService');
+    if (select) {
+      const current = select.value;
+      select.innerHTML = data.services.map((service) => `<option>${escapeHtml(service.name)}</option>`).join('') + '<option>Altro</option>';
+      if ([...select.options].some((option) => option.value === current)) {
+        select.value = current;
+      }
+    }
+  }
+
+  function renderReports() {
+    const revenueNode = $('#reportRevenue');
+    const appointmentsNode = $('#reportAppointments');
+    const clientsNode = $('#reportClients');
+    const pendingNode = $('#reportPending');
+    const topServicesNode = $('#topServices');
+    if (!revenueNode || !appointmentsNode) return;
+
+    const now = new Date();
+    const prefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const monthAppointments = data.appointments.filter((a) => a.date && a.date.startsWith(prefix) && a.status !== 'Annullato');
+
+    revenueNode.textContent = money(monthAppointments.filter((a) => a.status === 'Confermato').reduce((sum, a) => sum + (Number(a.price) || 0), 0));
+    appointmentsNode.textContent = String(monthAppointments.length);
+    clientsNode.textContent = String(clients().length);
+    pendingNode.textContent = String(data.appointments.filter((a) => a.status === 'In attesa').length);
+
+    const counts = {};
+    monthAppointments.forEach((appointment) => {
+      counts[appointment.service] = (counts[appointment.service] || 0) + 1;
+    });
+
+    const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    topServicesNode.innerHTML = ranked.length
+      ? ranked.map(([name, count]) => `
+          <div class="settings-row">
+            <b>${escapeHtml(name)}</b>
+            <span class="pill">${count} prenotazioni</span>
+          </div>
+        `).join('')
+      : '<div class="empty">Nessun dato per questo mese.</div>';
+  }
+
+  function renderAppointments() {
+    const input = $('#appointmentSearch');
+    const query = (input ? input.value : '').toLowerCase();
+    const appointments = [...data.appointments]
+      .filter((a) => [a.name, a.service, a.date, a.status].join(' ').toLowerCase().includes(query))
+      .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+    const list = $('#appointmentList');
+    if (!list) return;
+
+    list.innerHTML = appointments.length
+      ? appointments.map((a) => `
+          <div>
+            ${appointmentCard(a)}
+            <div class="actions" style="justify-content:flex-end;margin:-3px 0 12px">
+              <button class="iconbtn" data-edit="${a.id}">Modifica</button>
+              <button class="iconbtn" data-status="${a.id}">${a.status === 'In attesa' ? 'Conferma' : 'Metti in attesa'}</button>
+              <button class="iconbtn" data-delete="${a.id}" aria-label="Elimina">Elimina</button>
+            </div>
+          </div>
+        `).join('')
+      : '<div class="empty">Nessun appuntamento trovato.</div>';
+  }
+
+  function renderClients() {
+    const input = $('#clientSearch');
+    const query = (input ? input.value : '').toLowerCase();
+    const list = clients().filter((client) => (client.name + ' ' + client.phone + ' ' + client.lastService).toLowerCase().includes(query));
+
+    const table = $('#clientTable');
+    if (!table) return;
+
+    table.innerHTML = list.length
+      ? list.map((client) => `
+          <tr>
+            <td><b>${escapeHtml(client.name)}</b></td>
+            <td>${escapeHtml(client.phone || '—')}</td>
+            <td>${escapeHtml(client.lastService)}<div class="muted">${fmtDate(client.lastDate)}</div></td>
+            <td>${client.visits}</td>
+          </tr>
+        `).join('')
+      : '<tr><td colspan="4" class="empty">Nessun cliente trovato.</td></tr>';
+  }
+
+  function renderCalendar() {
+    const y = month.getFullYear();
+    const m = month.getMonth();
+    $('#monthTitle').textContent = new Intl.DateTimeFormat('it-IT', { month: 'long', year: 'numeric' }).format(month);
+
+    const first = new Date(y, m, 1);
+    const offset = (first.getDay() + 6) % 7;
+    const dayCount = new Date(y, m + 1, 0).getDate();
+    const names = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
+
+    let html = names.map((name) => `<div class="dayhead">${name}</div>`).join('');
+    for (let i = 0; i < offset; i += 1) html += '<div></div>';
+
+    for (let day = 1; day <= dayCount; day += 1) {
+      const key = `${y}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const events = data.appointments.filter((a) => a.date === key && a.status !== 'Annullato').sort((a, b) => a.time.localeCompare(b.time));
+      html += `
+        <div class="day ${key === localDate(today) ? 'today' : ''}" data-day="${key}" title="Clicca per aggiungere un appuntamento">
+          <div class="daynum">${day}</div>
+          ${events.slice(0, 2).map((a) => `<div class="eventdot">${escapeHtml(a.time)} ${escapeHtml(a.name.split(' ')[0])}</div>`).join('')}
+          ${events.length > 2 ? `<div class="muted">+${events.length - 2}</div>` : ''}
+        </div>
+      `;
+    }
+
+    $('#calendarGrid').innerHTML = html;
+  }
+
+  function openModal(appointment = null, date = localDate(today)) {
+    editingId = appointment ? appointment.id : null;
+    $('#modalTitle').textContent = appointment ? 'Modifica appuntamento' : 'Nuovo appuntamento';
+    $('#fName').value = appointment ? appointment.name : '';
+    $('#fPhone').value = appointment ? appointment.phone : '';
+    $('#fService').value = appointment ? appointment.service : 'Taglio uomo';
+    $('#fDate').value = appointment ? appointment.date : date;
+    $('#fTime').value = appointment ? appointment.time : '10:00';
+    $('#fPrice').value = appointment ? appointment.price : 20;
+    $('#fStatus').value = appointment && appointment.status === 'In attesa' ? 'In attesa' : 'Confermato';
+    $('#fNotes').value = appointment ? appointment.notes : '';
+    $('#modalWrap').classList.remove('hidden');
+    setTimeout(() => $('#fName').focus(), 50);
+  }
+
+  function closeModal() {
+    $('#modalWrap').classList.add('hidden');
+    editingId = null;
+  }
+
+  function download(filename, text, type) {
+    const blob = new Blob([text], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.querySelectorAll('.nav').forEach((button) => button.addEventListener('click', () => go(button.dataset.page)));
+  document.querySelectorAll('[data-goto]').forEach((button) => button.addEventListener('click', () => go(button.dataset.goto)));
+
+  ['addTop', 'quickAdd', 'addAppointment', 'addCalendar'].forEach((id) => $('#' + id).addEventListener('click', () => openModal()));
+  $('#closeModal').addEventListener('click', closeModal);
+  $('#cancelModal').addEventListener('click', closeModal);
+  $('#modalWrap').addEventListener('click', (event) => {
+    if (event.target === $('#modalWrap')) closeModal();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeModal();
+  });
+
+  $('#addService').addEventListener('click', () => {
+    const name = prompt('Nome del servizio:');
+    if (!name || !name.trim()) return;
+    const raw = prompt('Prezzo in euro:', '20');
+    if (raw === null) return;
+    const price = Number(raw);
+    if (!Number.isFinite(price) || price < 0) {
+      notify('Inserisci un prezzo valido.');
+      return;
+    }
+    data.services.push({ name: name.trim(), price });
+    save();
+    notify('Servizio aggiunto al listino.');
+  });
+
+  $('#serviceList').addEventListener('click', (event) => {
+    const editButton = event.target.closest('[data-service-edit]');
+    const deleteButton = event.target.closest('[data-service-delete]');
+
+    if (editButton) {
+      const index = Number(editButton.dataset.serviceEdit);
+      const oldService = data.services[index];
+      const name = prompt('Nome del servizio:', oldService.name);
+      if (!name || !name.trim()) return;
+      const raw = prompt('Prezzo in euro:', String(oldService.price));
+      if (raw === null) return;
+      const price = Number(raw);
+      if (!Number.isFinite(price) || price < 0) {
+        notify('Inserisci un prezzo valido.');
+        return;
+      }
+      data.services[index] = { name: name.trim(), price };
+      save();
+      notify('Servizio aggiornato.');
+    }
+
+    if (deleteButton) {
+      const index = Number(deleteButton.dataset.serviceDelete);
+      if (confirm('Eliminare questo servizio dal listino? Gli appuntamenti già registrati non cambiano.')) {
+        data.services.splice(index, 1);
+        save();
+        notify('Servizio eliminato.');
+      }
+    }
+  });
+
+  $('#exportReport').addEventListener('click', () => {
+    const rows = [
+      ['Data', 'Ora', 'Cliente', 'Servizio', 'Prezzo', 'Stato'],
+      ...data.appointments.map((a) => [a.date, a.time, a.name, a.service, a.price, a.status])
+    ];
+    const csv = '\ufeff' + rows.map((row) => row.map((value) => '"' + String(value ?? '').replace(/"/g, '""') + '"').join(';')).join('\r\n');
+    download('businessbuddy-report.csv', csv, 'text/csv;charset=utf-8');
+  });
+
+  $('#appointmentForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const appointment = {
+      id: editingId ?? Date.now(),
+      name: $('#fName').value.trim(),
+      phone: $('#fPhone').value.trim(),
+      service: $('#fService').value,
+      date: $('#fDate').value,
+      time: $('#fTime').value,
+      price: Math.max(0, Number($('#fPrice').value) || 0),
+      status: $('#fStatus').value,
+      notes: $('#fNotes').value.trim()
+    };
+
+    if (!appointment.name || !appointment.date || !appointment.time) return;
+
+    if (editingId !== null) {
+      data.appointments = data.appointments.map((item) => item.id === editingId ? appointment : item);
+    } else {
+      data.appointments.push(appointment);
+    }
+
+    closeModal();
+    save();
+    notify(editingId ? 'Appuntamento aggiornato.' : 'Appuntamento salvato su questo dispositivo.');
+  });
+
+  $('#appointmentSearch').addEventListener('input', renderAppointments);
+  $('#clientSearch').addEventListener('input', renderClients);
+
+  $('#appointmentList').addEventListener('click', (event) => {
+    const editButton = event.target.closest('[data-edit]');
+    const statusButton = event.target.closest('[data-status]');
+    const deleteButton = event.target.closest('[data-delete]');
+
+    if (editButton) {
+      const id = Number(editButton.dataset.edit);
+      const appointment = data.appointments.find((item) => item.id === id);
+      if (appointment) openModal(appointment);
+    }
+
+    if (statusButton) {
+      const id = Number(statusButton.dataset.status);
+      data.appointments = data.appointments.map((appointment) =>
+        appointment.id === id
+          ? { ...appointment, status: appointment.status === 'In attesa' ? 'Confermato' : 'In attesa' }
+          : appointment
+      );
+      save();
+      notify('Stato aggiornato.');
+    }
+
+    if (deleteButton) {
+      const id = Number(deleteButton.dataset.delete);
+      if (confirm('Eliminare questo appuntamento?')) {
+        data.appointments = data.appointments.filter((appointment) => appointment.id !== id);
+        save();
+        notify('Appuntamento eliminato.');
+      }
+    }
+  });
+
+  $('#prevMonth').addEventListener('click', () => {
+    month = new Date(month.getFullYear(), month.getMonth() - 1, 1);
+    renderCalendar();
+  });
+
+  $('#nextMonth').addEventListener('click', () => {
+    month = new Date(month.getFullYear(), month.getMonth() + 1, 1);
+    renderCalendar();
+  });
+
+  $('#thisMonth').addEventListener('click', () => {
+    month = new Date(today.getFullYear(), today.getMonth(), 1);
+    renderCalendar();
+  });
+
+  $('#calendarGrid').addEventListener('click', (event) => {
+    const target = event.target.closest('[data-day]');
+    if (target) openModal(null, target.dataset.day);
+  });
+
+  $('#storeName').addEventListener('change', (event) => {
+    data.name = event.target.value.trim() || 'Il mio negozio';
+    save();
+    notify('Nome del negozio aggiornato.');
+  });
+
+  $('#settingName').addEventListener('change', (event) => {
+    data.name = event.target.value.trim() || 'Il mio negozio';
+    save();
+    notify('Nome del negozio aggiornato.');
+  });
+
+  $('#exportData').addEventListener('click', () => {
+    download('businessbuddy-backup.json', JSON.stringify(data, null, 2), 'application/json');
+  });
+
+  $('#exportClients').addEventListener('click', () => {
+    const rows = [
+      ['Nome', 'Telefono', 'Ultimo servizio', 'Ultima data', 'Visite'],
+      ...clients().map((client) => [client.name, client.phone, client.lastService, client.lastDate, client.visits])
+    ];
+    const csv = '\ufeff' + rows.map((row) => row.map((value) => '"' + String(value ?? '').replace(/"/g, '""') + '"').join(';')).join('\r\n');
+    download('businessbuddy-clienti.csv', csv, 'text/csv;charset=utf-8');
+  });
+
+  $('#resetData').addEventListener('click', () => {
+    if (confirm('Vuoi cancellare le modifiche e ripristinare i dati dimostrativi?')) {
+      data = seed();
+      save();
+      notify('Dati di esempio ripristinati.');
+    }
+  });
+
+  render();
+})();
+
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script></body></html>

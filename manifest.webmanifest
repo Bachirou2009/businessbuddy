@@ -1,0 +1,17 @@
+{
+  "name": "BusinessBuddy",
+  "short_name": "BusinessBuddy",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f7f5",
+  "theme_color": "#173d32",
+  "description": "Gestione appuntamenti per negozi e studi professionali",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
